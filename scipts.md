@@ -8,11 +8,11 @@
     "link": "lerna link",
     "changed": "lerna changed",
     "start": "lerna run --parallel start",
-    "build": "lerna run build --scope react-query-axios-hooks",
-    "clean": "lerna run clean --scope react-query-axios-hooks",
+    "build": "lerna run build --scope react-query-hooks",
+    "clean": "lerna run clean --scope react-query-hooks",
     "clean:all": "lerna clean",
-    "watch": "lerna run watch --scope react-query-axios-hooks",
-    "package": "lerna exec --scope react-query-axios-hooks -- npm pack"
+    "watch": "lerna run watch --scope react-query-hooks",
+    "package": "lerna exec --scope react-query-hooks -- npm pack"
   }
   }
   ```
@@ -32,7 +32,7 @@ npm run link
 ```sh
 npm run changed
 ```
-- Remove all `react-query-axios-hooks-*.tgz` file from react-query-axios-hooks package.
+- Remove all `react-query-hooks-*.tgz` file from react-query-hooks package.
 ```sh
 npm run clean
 ```

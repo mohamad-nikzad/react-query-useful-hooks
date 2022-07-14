@@ -1,5 +1,5 @@
 import React from 'react';
-import {DrillD} from 'react-query-axios-hooks';
+import {DrillD} from 'react-query-hooks';
 import './App.css';
 
 function App() {

@@ -1,5 +1,5 @@
 {
-  "name": "react-query-axios-hooks",
+  "name": "react-query-hooks",
   "version": "1.0.0",
   "description": "",
   "main": "./dist/cjs/index.js",
@@ -11,14 +11,14 @@
   "repository": {
     "type": "git",
     "directory": "packages/core",
-    "url": "https://github.com/sinashahoveisi/react-query-axios-hooks.git"
+    "url": "https://github.com/sinashahoveisi/react-query-hooks.git"
   },
   "scripts": {
     "prepack": "yarn build",
     "prebuild": "yarn clean",
     "start": "rollup -cw",
     "build": "rollup -c",
-    "clean": "rimraf dist react-query-axios-hooks-*.tgz",
+    "clean": "rimraf dist react-query-hooks-*.tgz",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook"
   },
