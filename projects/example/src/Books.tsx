@@ -1,5 +1,5 @@
 import React from 'react';
-import {useFetch} from 'react-query-hooks';
+import {useFetch} from 'react-query-useful-hooks';
 
 function Todos() {
   const todos = useFetch({

@@ -1,7 +1,7 @@
 import React from 'react';
 import {QueryClient, QueryClientProvider} from 'react-query';
 import {ReactQueryDevtools} from 'react-query/devtools';
-import {configure} from 'react-query-hooks';
+import {configure} from 'react-query-useful-hooks';
 import axios from 'axios';
 import Books from './Books';
 import './App.css';

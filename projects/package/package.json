@@ -1,5 +1,5 @@
 {
-  "name": "react-query-hooks",
+  "name": "react-query-useful-hooks",
   "version": "1.0.0",
   "description": "",
   "main": "dist/cjs/index.js",
@@ -12,14 +12,14 @@
   "repository": {
     "type": "git",
     "directory": "packages/core",
-    "url": "https://github.com/sinashahoveisi/react-query-hooks.git"
+    "url": "https://github.com/sinashahoveisi/react-query-useful-hooks.git"
   },
   "scripts": {
     "prepack": "yarn build",
     "prebuild": "yarn clean",
     "start": "rollup -cw",
     "build": "rollup -c",
-    "clean": "rimraf dist react-query-hooks-*.tgz",
+    "clean": "rimraf dist react-query-useful-hooks-*.tgz",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook"
   },

@@ -1,17 +1,17 @@
-# react-query-hooks
+# react-query-useful-hooks
 
 > The best and useful hooks for react-query
 
 
 
-![GitHub branch checks state](https://img.shields.io/github/checks-status/sinashahoveisi/react-query-hooks/master?logo=github&style=plastic)
-![GitHub issues](https://img.shields.io/github/issues/sinashahoveisi/react-query-hooks?logo=github&style=plastic)
-![GitHub](https://img.shields.io/github/license/sinashahoveisi/react-query-hooks?style=plastic)
-![npm](https://img.shields.io/npm/v/react-query-hooks?logo=npm&style=plastic)
+![GitHub branch checks state](https://img.shields.io/github/checks-status/sinashahoveisi/react-query-useful-hooks/master?logo=github&style=plastic)
+![GitHub issues](https://img.shields.io/github/issues/sinashahoveisi/react-query-useful-hooks?logo=github&style=plastic)
+![GitHub](https://img.shields.io/github/license/sinashahoveisi/react-query-useful-hooks?style=plastic)
+![npm](https://img.shields.io/npm/v/react-query-useful-hooks?logo=npm&style=plastic)
 ![Website](https://img.shields.io/website?down_message=offline&style=plastic&up_message=online&url=https%3A%2F%2Fsinasho.ir)
-![GitHub language count](https://img.shields.io/github/languages/count/sinashahoveisi/react-query-hooks?logo=TypeScript&style=plastic)
-![GitHub top language](https://img.shields.io/github/languages/top/sinashahoveisi/react-query-hooks?logo=TypeScript&style=plastic)
-![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/sinashahoveisi/react-query-hooks?style=plastic)
+![GitHub language count](https://img.shields.io/github/languages/count/sinashahoveisi/react-query-useful-hooks?logo=TypeScript&style=plastic)
+![GitHub top language](https://img.shields.io/github/languages/top/sinashahoveisi/react-query-useful-hooks?logo=TypeScript&style=plastic)
+![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/sinashahoveisi/react-query-useful-hooks?style=plastic)
 ---
 
 ## What is this?
@@ -37,18 +37,18 @@ You can install this package in two ways simultaneously
 
 install with [npm]
 ```sh
-npm install react-query-hooks
+npm install react-query-useful-hooks
 ```
 
 install with [yarn]
 ```sh
-yarn add react-query-hooks
+yarn add react-query-useful-hooks
 ```
 
 ## Api
 
 ```tsx
-import {useFetch, useInfinite, usePaginate, usePost, configure} from 'react-query-hooks';
+import {useFetch, useInfinite, usePaginate, usePost, configure} from 'react-query-useful-hooks';
 ```
 
 ## Examples
@@ -57,7 +57,7 @@ import {useFetch, useInfinite, usePaginate, usePost, configure} from 'react-quer
 
 ```tsx
 import React from 'react';
-import {useFetch} from 'react-query-hooks';
+import {useFetch} from 'react-query-useful-hooks';
 
 function Todos() {
   const todos = useFetch({
@@ -96,4 +96,4 @@ Sina Shah Oveisi [@sinashahoveisi](https://sinasho.ir)
 
 [author]: https://github.com/sinashahoveisi
 
-[license]: https://github.com/sinashahoveisi/react-query-hooks/blob/master/LICENSE
+[license]: https://github.com/sinashahoveisi/react-query-useful-hooks/blob/master/LICENSE

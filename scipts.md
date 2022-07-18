@@ -8,11 +8,11 @@
     "link": "lerna link",
     "changed": "lerna changed",
     "start": "lerna run --parallel start",
-    "build": "lerna run build --scope react-query-hooks",
-    "clean": "lerna run clean --scope react-query-hooks",
+    "build": "lerna run build --scope react-query-useful-hooks",
+    "clean": "lerna run clean --scope react-query-useful-hooks",
     "clean:all": "lerna clean",
-    "watch": "lerna run watch --scope react-query-hooks",
-    "package": "lerna exec --scope react-query-hooks -- npm pack"
+    "watch": "lerna run watch --scope react-query-useful-hooks",
+    "package": "lerna exec --scope react-query-useful-hooks -- npm pack"
   }
   }
   ```
@@ -32,7 +32,7 @@ npm run link
 ```sh
 npm run changed
 ```
-- Remove all `react-query-hooks-*.tgz` file from react-query-hooks package.
+- Remove all `react-query-useful-hooks-*.tgz` file from react-query-useful-hooks package.
 ```sh
 npm run clean
 ```
