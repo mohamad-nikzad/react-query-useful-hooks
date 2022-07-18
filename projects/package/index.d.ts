@@ -6,9 +6,9 @@ import {
   UseInfiniteQueryResult,
   UseInfiniteQueryOptions,
   UseMutationOptions,
+  UseMutationResult,
   MutationKey
 } from 'react-query';
-import {UseMutationResult} from 'react-query/types/react/types';
 
 export interface DynamicFetchParamsProps {
   query?: object;
@@ -72,7 +72,7 @@ export type QueryInfiniteOptionProps = Omit<
 
 export type MutationOptionProps = Omit<
   UseMutationOptions<AxiosResponse<any, any>, AxiosError<unknown, any>, MutationRequestProps>,
-  'mutationKey' | 'mutationFn'
+  'mutationKey' | 'mutationFn' | 'onSuccess' | 'onError'
 >;
 
 export interface ConfigureProps {

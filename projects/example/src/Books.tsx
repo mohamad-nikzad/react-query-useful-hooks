@@ -1,12 +1,12 @@
 import React from 'react';
 import {useFetch} from 'react-query-hooks';
 
-function Books() {
-  const sina = useFetch({
+function Todos() {
+  const todos = useFetch({
     url: 'todos/1',
     enabled: true
   });
-  console.log(sina);
+  console.log(todos);
   return (
     <div className="App">
       <header className="App-header" />
@@ -14,4 +14,4 @@ function Books() {
   );
 }
 
-export default Books;
+export default Todos;

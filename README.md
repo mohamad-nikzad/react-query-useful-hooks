@@ -1,6 +1,8 @@
 # react-query-hooks
 
-> The best DrillDown for folder or graph or tree structure package for react
+> The best and useful hooks for react-query
+
+
 
 ![GitHub branch checks state](https://img.shields.io/github/checks-status/sinashahoveisi/react-query-hooks/master?logo=github&style=plastic)
 ![GitHub issues](https://img.shields.io/github/issues/sinashahoveisi/react-query-hooks?logo=github&style=plastic)
@@ -14,17 +16,15 @@
 
 ## What is this?
 
-This package is a [React] component that can display graphic, 
+This package is a [React] simple and useful hooks for [react-query] package.
 
 
 ### Table of Contents
 
 - [Installation](#installation)
-- [Usage](#usage)
+- [Api](#Api)
 - [Example](#examples)
   - [Simple](#simple)
-  - [Advance](#advance)
-  - [more Advance](#moreAdvance)
 - [Demo](#demo)
 - [Documentation](#documentation)
 - [Creator](#creator)
@@ -44,36 +44,35 @@ install with [yarn]
 ```sh
 yarn add react-query-hooks
 ```
----
 
-## Usage
+## Api
 
 ```tsx
-import {DrillD} from 'react-query-hooks';
+import {useFetch, useInfinite, usePaginate, usePost, configure} from 'react-query-hooks';
 ```
-or
-```tsx
-import DrillD from 'react-query-hooks';
-```
----
 
 ## Examples
 
 ### Simple
 
-simple example for show simple folder structure data
-
-![simple]
-
 ```tsx
-import React, { Component } from 'react';
+import React from 'react';
 import {useFetch} from 'react-query-hooks';
 
-function App() {
+function Todos() {
+  const todos = useFetch({
+    url: 'todos/1',
+    enabled: true
+  });
+  console.log(todos);
   return (
-    
+    <div className="App">
+      <header className="App-header" />
+    </div>
   );
 }
+
+export default Todos;
 ```
 
 ## Creator
@@ -89,16 +88,12 @@ Sina Shah Oveisi [@sinashahoveisi](https://sinasho.ir)
 
 [react]: http://reactjs.org
 
+[react-query]: https://react-query-v3.tanstack.com/
+
 [npm]: https://docs.npmjs.com/cli/install
 
 [yarn]: https://docs.yarn.com/cli/install
 
 [author]: https://github.com/sinashahoveisi
-
-[simple]: https://react-query-hooks.sinasho.ir/assets/simple.gif
-
-[advance]: https://react-query-hooks.sinasho.ir/assets/advance.gif
-
-[moreAdvance]: https://react-query-hooks.sinasho.ir/assets/moreAdvance.gif
 
 [license]: https://github.com/sinashahoveisi/react-query-hooks/blob/master/LICENSE
