@@ -1,51 +1,31 @@
 import {AxiosError, AxiosRequestConfig} from 'axios';
-import {allocateParamToString, urlGenerator} from 'utils';
+import {allocateParamToString} from 'utils';
 import {useMutation, useQueryClient} from 'react-query';
-import {useAxios, useUser} from 'hooks';
 import merge from 'lodash/merge';
 import set from 'lodash/set';
 import isFunction from 'lodash/isFunction';
 import forEach from 'lodash/forEach';
-import {mutationRequestProps} from 'types/request';
-
-interface IPostConfig {
-  url: string;
-  query?: object;
-  version?: number;
-  method?: 'POST' | 'PUT' | 'DELETE' | 'PATCH' | 'GET';
-  removeQueries?: Array<Array<string | number | undefined | null> | string>;
-  refetchQueries?: Array<Array<string | number | undefined | null> | string>;
-  form?: any;
-  isGeneral?: boolean;
-  isMultipart?: boolean;
-  showError?: boolean;
-  onSuccess?(response: any, request?: any, params?: any): void;
-  onError?(error: any, request?: any, params?: any): void;
-  isUrlencoded?: boolean;
-}
+import {MutationRequestProps, UsePostProps, UsePostResultProps} from '../../../index';
 
 const usePost = ({
+  axiosInstance,
+  name,
   url,
   method = 'POST',
   query,
-  version,
-  form,
-  isGeneral = false,
   isMultipart,
   showError = true,
   removeQueries,
   isUrlencoded = false,
   refetchQueries,
   onSuccess,
-  onError
-}: IPostConfig) => {
+  onError,
+  options
+}: UsePostProps): UsePostResultProps => {
   const queryClient = useQueryClient();
-  const user = useUser();
-  const AxiosInstance = useAxios();
 
   const requestConfig: AxiosRequestConfig = {
     headers: {
-      Authorization: `Bearer ${user?.access_token}`,
       'Content-type': isMultipart
         ? 'multipart/form-data'
         : isUrlencoded
@@ -54,20 +34,19 @@ const usePost = ({
       silent: !showError
     },
 
-    url: urlGenerator(url, version, isGeneral),
+    url,
     method,
     params: query
   };
 
-  const createRequest = ({body, queryParams, params, token}: mutationRequestProps) => {
+  const createRequest = ({body, queryParams, params}: MutationRequestProps) => {
     if (queryParams) set(requestConfig, 'params', merge(query, queryParams));
-    if (token) set(requestConfig, ['headers', 'Authorization'], `Bearer ${token}`);
-    if (params) set(requestConfig, 'url', allocateParamToString(urlGenerator(url, version), params));
+    if (params) set(requestConfig, 'url', allocateParamToString(url, params));
     set(requestConfig, 'data', body);
-    return AxiosInstance(requestConfig);
+    return axiosInstance(requestConfig);
   };
 
-  const mutationData = useMutation(createRequest, {
+  const mutationData = useMutation(name, createRequest, {
     retry: false,
     onSuccess: (data, variables) => {
       forEach(removeQueries, (removeQuery: Array<string | number | undefined | null> | string) =>
@@ -84,11 +63,11 @@ const usePost = ({
       if (isFunction(onError)) {
         onError(error.request, variables, variables?.params);
       }
-    }
+    },
+    ...options
   });
 
-  const post = (body?: any, queryParams?: object, params?: object, token?: string) =>
-    mutationData.mutate({body, queryParams, params, token});
+  const post = (mutationParams: MutationRequestProps) => mutationData.mutate(mutationParams);
 
   return {...mutationData, post, params: mutationData.variables?.params};
 };

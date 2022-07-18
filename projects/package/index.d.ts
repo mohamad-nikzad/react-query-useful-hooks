@@ -1,5 +1,14 @@
-import {AxiosError, AxiosResponse, AxiosInstance} from 'axios';
-import {InfiniteData, UseQueryResult, UseQueryOptions, UseInfiniteQueryResult, UseInfiniteQueryOptions} from 'react-query';
+import {AxiosError, AxiosResponse, AxiosInstance, Method} from 'axios';
+import {
+  InfiniteData,
+  UseQueryResult,
+  UseQueryOptions,
+  UseInfiniteQueryResult,
+  UseInfiniteQueryOptions,
+  UseMutationOptions,
+  MutationKey
+} from 'react-query';
+import {UseMutationResult} from 'react-query/types/react/types';
 
 export interface DynamicFetchParamsProps {
   query?: object;
@@ -17,6 +26,12 @@ export interface DynamicFetchInfiniteParamsProps {
   params?: object;
   search?: object;
   pageParams?: boolean | number;
+}
+
+export interface MutationRequestProps {
+  body?: any;
+  queryParams?: object;
+  params?: object;
 }
 
 export type QueryOptionProps = Omit<
@@ -55,12 +70,18 @@ export type QueryInfiniteOptionProps = Omit<
   'queryKey' | 'queryFn' | 'enabled' | 'staleTime' | 'cacheTime' | 'onSuccess' | 'onError'
 >;
 
+export type MutationOptionProps = Omit<
+  UseMutationOptions<AxiosResponse<any, any>, AxiosError<unknown, any>, MutationRequestProps>,
+  'mutationKey' | 'mutationFn'
+>;
+
 export interface ConfigureProps {
   axios?: AxiosInstance;
   queryOptions?: QueryOptionProps;
   fetchQueryOptions?: QueryFetchOptionProps;
   paginateQueryOptions?: QueryPaginateOptionProps;
   infiniteQueryOptions?: QueryInfiniteOptionProps;
+  mutationOptions?: MutationOptionProps;
 }
 
 export interface UseFetchProps {
@@ -69,11 +90,9 @@ export interface UseFetchProps {
   name?: Array<string | number | undefined | null> | string;
   query?: object;
   params?: object;
-  version?: number;
   staleTime?: number;
   cacheTime?: number;
   showError?: boolean;
-  isGeneral?: boolean;
   enabled?: boolean;
   onSuccess?(data: AxiosResponse): void;
   onError?(error: AxiosError): void;
@@ -122,7 +141,6 @@ export interface UseInfiniteProps {
   query?: object;
   search?: object;
   params?: object;
-  version?: number;
   staleTime?: number;
   cacheTime?: number;
   initialData?: any;
@@ -140,9 +158,33 @@ export interface UseInfiniteResultProps
   data: any;
 }
 
+export interface UsePostProps {
+  axiosInstance: AxiosInstance;
+  name: MutationKey;
+  url: string;
+  query?: object;
+  method?: Method;
+  removeQueries?: Array<Array<string | number | undefined | null> | string>;
+  refetchQueries?: Array<Array<string | number | undefined | null> | string>;
+  isMultipart?: boolean;
+  showError?: boolean;
+  isUrlencoded?: boolean;
+  onSuccess?(response: any, request?: any, params?: any): void;
+  onError?(error: any, request?: any, params?: any): void;
+  options?: MutationOptionProps;
+}
+
+export interface UsePostResultProps
+  extends UseMutationResult<AxiosResponse<any, any>, AxiosError<unknown, any>, MutationRequestProps> {
+  post(mutationParams: MutationRequestProps): void;
+  params?: MutationRequestProps;
+}
+
+export declare function configure(options: ConfigureProps): void;
+
 export declare function useFetch(props: Omit<UseFetchProps, 'axiosInstance'>): UseFetchResultProps;
 export declare function usePaginate(props: Omit<UsePaginateProps, 'axiosInstance'>): UsePaginateResultProps;
 export declare function useInfinite(props: Omit<UseInfiniteProps, 'axiosInstance'>): UseInfiniteResultProps;
-export declare function configure(options: ConfigureProps): void;
+export declare function usePost(props: Omit<UsePostProps, 'axiosInstance'>): UseInfiniteResultProps;
 
 export default useFetch;

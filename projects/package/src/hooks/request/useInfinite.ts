@@ -63,8 +63,8 @@ const useInfinite = ({
     !isEmpty(without(values(merge(search, dynamicParams?.search)), undefined, null))
   ) {
     prettyName = concat(name, ['search']);
-    staleTime = 0;
-    cacheTime = 0;
+    staleTime = 200;
+    cacheTime = 200;
   }
   const queryClient = useQueryClient();
 
