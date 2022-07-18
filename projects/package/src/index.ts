@@ -1,10 +1,18 @@
 import StaticAxios, {AxiosInstance} from 'axios';
-import useCustomFetch from './hooks/request/useFetch';
-import {ConfigureProps, QueryOptionProps, UseFetchProps, UseFetchResultProps} from '../index';
+import {useCustomFetch, useCustomPaginate} from 'hooks';
+import {
+  ConfigureProps,
+  QueryOptionProps,
+  UseFetchProps,
+  UseFetchResultProps,
+  UsePaginateProps,
+  UsePaginateResultProps
+} from '../index';
 
 function makeReactQueryHooks() {
   let axiosInstance: AxiosInstance = StaticAxios;
   let fetchQueryOptions: QueryOptionProps = {};
+  let paginateQueryOptions: QueryOptionProps = {};
   let queryOptions: QueryOptionProps = {};
 
   function configure(options: ConfigureProps) {
@@ -16,6 +24,9 @@ function makeReactQueryHooks() {
     }
     if (options.queryOptions !== undefined) {
       queryOptions = options.queryOptions;
+    }
+    if (options.paginateQueryOptions !== undefined) {
+      paginateQueryOptions = options.paginateQueryOptions;
     }
   }
 
@@ -31,11 +42,24 @@ function makeReactQueryHooks() {
     });
   }
 
-  return {configure, useFetch};
+  function usePaginate(props: Omit<UsePaginateProps, 'axiosInstance'>): UsePaginateResultProps {
+    return useCustomPaginate({
+      axiosInstance,
+      ...props,
+      options: {
+        ...queryOptions,
+        ...fetchQueryOptions,
+        ...paginateQueryOptions,
+        ...props.options
+      }
+    });
+  }
+
+  return {configure, useFetch, usePaginate};
 }
 
 const reactQueryHooksInstance = makeReactQueryHooks();
 
-const {configure, useFetch} = reactQueryHooksInstance;
+const {configure, useFetch, usePaginate} = reactQueryHooksInstance;
 
-export {configure, useFetch};
+export {configure, useFetch, usePaginate};

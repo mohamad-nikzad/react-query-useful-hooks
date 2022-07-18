@@ -1,85 +1,85 @@
-import {AxiosError, AxiosRequestConfig, AxiosResponse} from 'axios';
+import {useEffect, useState} from 'react';
 import {useQuery} from 'react-query';
-import useUser from 'hooks/user/useUser';
-import {urlGenerator, allocateParamToString} from 'utils';
+import {allocateParamToString} from 'utils';
 import merge from 'lodash/merge';
 import get from 'lodash/get';
 import isString from 'lodash/isString';
-import {useAxios, useError} from 'hooks';
 import compact from 'lodash/compact';
 import concat from 'lodash/concat';
 import isEmpty from 'lodash/isEmpty';
+import {AxiosError, AxiosRequestConfig} from 'axios';
+import values from 'lodash/values';
+import without from 'lodash/without';
+import {DynamicFetchPaginateParamsProps, UsePaginateProps, UsePaginateResultProps} from '../../../index';
 
-interface IGetConfig {
-  name?: Array<string | number | undefined | null> | string;
-  url: string;
-  version?: number;
-  page: number;
-  staleTime?: number;
-  cacheTime?: number;
-  query?: object;
-  search?: object;
-  params?: object;
-  isGeneral?: boolean;
-  enabled?: boolean;
-  onSuccess?(data: AxiosResponse): void;
-  onError?(error: AxiosError): void;
-}
 const usePagination = ({
+  axiosInstance,
   name = 'notLongTimeAvailable',
   url,
   page = 1,
-  version,
+  perPage,
   query,
   search,
   params,
   onSuccess,
   onError,
   enabled = false,
-  isGeneral = false,
   staleTime = 180000,
   cacheTime = 600000
-}: IGetConfig) => {
-  let prettyName = isString(name) ? name : compact(name);
+}: UsePaginateProps): UsePaginateResultProps => {
+  const [dynamicParams, setDynamicParams] = useState<DynamicFetchPaginateParamsProps | undefined>(undefined);
+  let prettyName: Array<string | number | undefined | null> | string = isString(name) ? name : compact(name);
 
-  if (prettyName === 'notLongTimeAvailable' || !isEmpty(search)) {
-    prettyName = [];
+  if (
+    prettyName === 'notLongTimeAvailable' ||
+    !isEmpty(without(values(merge(search, dynamicParams?.search)), undefined, null))
+  ) {
+    prettyName = concat(name, ['search']);
     staleTime = 0;
     cacheTime = 0;
   }
 
-  const user = useUser();
-  const AxiosInstance = useAxios();
-
   const requestConfig: AxiosRequestConfig = {
-    url: allocateParamToString(urlGenerator(url, version, isGeneral), params),
+    url: allocateParamToString(url, params),
     method: 'GET',
-    params: merge(merge({page}, query), search),
-    headers: {Authorization: user?.access_token ? `Bearer ${user?.access_token}` : ''}
+    params: merge(merge({page, per_page: perPage}, query), merge(search, dynamicParams?.search))
   };
 
-  const paginateQuery = useQuery(concat(prettyName, page), () => AxiosInstance(requestConfig), {
-    refetchOnWindowFocus: false,
-    refetchInterval: false,
-    refetchOnReconnect: true,
-    refetchIntervalInBackground: true,
-    keepPreviousData: false,
-    enabled,
-    staleTime,
-    cacheTime,
-    retryDelay: 5000,
-    onSuccess,
-    onError,
-    retry: (failureCount: number, error: AxiosError): boolean => {
-      if (error?.response?.status === 404 || error?.response?.status === 500) return false;
-      return failureCount <= 1;
+  const paginateQuery = useQuery(
+    without(concat(prettyName, page, perPage), undefined, null),
+    () => axiosInstance(requestConfig),
+    {
+      refetchOnWindowFocus: false,
+      refetchInterval: false,
+      refetchOnReconnect: true,
+      refetchIntervalInBackground: true,
+      keepPreviousData: false,
+      enabled,
+      staleTime,
+      cacheTime,
+      retryDelay: 5000,
+      onSuccess,
+      onError,
+      retry: (failureCount: number, error: AxiosError): boolean => {
+        if (error?.response?.status === 404 || error?.response?.status === 500) return false;
+        return failureCount <= 1;
+      }
     }
-  });
+  );
   const refresh = () => paginateQuery.remove();
   const data = get(paginateQuery, ['data', 'data']);
-  const meta = get(paginateQuery, ['data', 'meta']);
 
-  return {...paginateQuery, refresh, data, meta};
+  useEffect(() => {
+    if (!isEmpty(compact(values(dynamicParams)))) {
+      paginateQuery.refetch();
+    }
+  }, [dynamicParams]);
+
+  const fetch = (fetchParams: DynamicFetchPaginateParamsProps) => {
+    setDynamicParams(fetchParams);
+  };
+
+  return {...paginateQuery, refresh, data, fetch};
 };
 
 export default usePagination;
