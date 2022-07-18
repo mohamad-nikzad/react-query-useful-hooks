@@ -1,10 +1,14 @@
 import StaticAxios, {AxiosInstance} from 'axios';
-import {useCustomFetch, useCustomPaginate} from 'hooks';
+import {useCustomFetch, useCustomInfinite, useCustomPaginate} from 'hooks';
 import {
   ConfigureProps,
+  QueryInfiniteOptionProps,
   QueryOptionProps,
+  QueryPaginateOptionProps,
   UseFetchProps,
   UseFetchResultProps,
+  UseInfiniteProps,
+  UseInfiniteResultProps,
   UsePaginateProps,
   UsePaginateResultProps
 } from '../index';
@@ -12,7 +16,8 @@ import {
 function makeReactQueryHooks() {
   let axiosInstance: AxiosInstance = StaticAxios;
   let fetchQueryOptions: QueryOptionProps = {};
-  let paginateQueryOptions: QueryOptionProps = {};
+  let paginateQueryOptions: QueryPaginateOptionProps = {};
+  let infiniteQueryOptions: QueryInfiniteOptionProps = {};
   let queryOptions: QueryOptionProps = {};
 
   function configure(options: ConfigureProps) {
@@ -27,6 +32,9 @@ function makeReactQueryHooks() {
     }
     if (options.paginateQueryOptions !== undefined) {
       paginateQueryOptions = options.paginateQueryOptions;
+    }
+    if (options.infiniteQueryOptions !== undefined) {
+      infiniteQueryOptions = options.infiniteQueryOptions;
     }
   }
 
@@ -55,11 +63,22 @@ function makeReactQueryHooks() {
     });
   }
 
-  return {configure, useFetch, usePaginate};
+  function useInfinite(props: Omit<UseInfiniteProps, 'axiosInstance'>): UseInfiniteResultProps {
+    return useCustomInfinite({
+      axiosInstance,
+      ...props,
+      options: {
+        ...infiniteQueryOptions,
+        ...props.options
+      }
+    });
+  }
+
+  return {configure, useFetch, usePaginate, useInfinite};
 }
 
 const reactQueryHooksInstance = makeReactQueryHooks();
 
-const {configure, useFetch, usePaginate} = reactQueryHooksInstance;
+const {configure, useFetch, usePaginate, useInfinite} = reactQueryHooksInstance;
 
-export {configure, useFetch, usePaginate};
+export {configure, useFetch, usePaginate, useInfinite};

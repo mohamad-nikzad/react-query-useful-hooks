@@ -25,7 +25,8 @@ const usePagination = ({
   onError,
   enabled = false,
   staleTime = 180000,
-  cacheTime = 600000
+  cacheTime = 600000,
+  options
 }: UsePaginateProps): UsePaginateResultProps => {
   const [dynamicParams, setDynamicParams] = useState<DynamicFetchPaginateParamsProps | undefined>(undefined);
   let prettyName: Array<string | number | undefined | null> | string = isString(name) ? name : compact(name);
@@ -63,7 +64,8 @@ const usePagination = ({
       retry: (failureCount: number, error: AxiosError): boolean => {
         if (error?.response?.status === 404 || error?.response?.status === 500) return false;
         return failureCount <= 1;
-      }
+      },
+      ...options
     }
   );
   const refresh = () => paginateQuery.remove();

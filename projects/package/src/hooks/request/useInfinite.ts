@@ -1,40 +1,45 @@
 import {useEffect, useState} from 'react';
-import {InfiniteData, useInfiniteQuery, useQueryClient} from 'react-query';
+import {useInfiniteQuery, useQueryClient} from 'react-query';
+import {allocateParamToString} from 'utils';
 import get from 'lodash/get';
 import set from 'lodash/set';
 import merge from 'lodash/merge';
 import concat from 'lodash/concat';
 import reduce from 'lodash/reduce';
-import {useAxios, useUser} from 'hooks';
-import {urlGenerator, allocateParamToString} from 'utils';
 import compact from 'lodash/compact';
 import isString from 'lodash/isString';
 import forEach from 'lodash/forEach';
-import isArray from 'lodash/isArray';
+import isArray from 'lodash/forEach';
 import values from 'lodash/values';
 import isEmpty from 'lodash/isEmpty';
-import {AxiosError, AxiosRequestConfig, AxiosResponse} from 'axios';
-import {responseProps} from 'types/request';
-import {dynamicParams} from 'types/common';
+import without from 'lodash/without';
+import isNumber from 'lodash/isNumber';
+import type {AxiosError, AxiosRequestConfig, AxiosResponse} from 'axios';
+import {
+  DynamicFetchInfiniteParamsProps,
+  DynamicFetchPaginateParamsProps,
+  UseInfiniteProps,
+  UseInfiniteResultProps
+} from '../../../index';
 
-interface IGetConfig {
-  url: string;
-  name?: Array<string | number | undefined | null> | string;
-  infiniteKey?: string;
-  staticKey?: string[];
-  query?: object;
-  search?: object;
-  params?: object;
-  version?: number;
-  staleTime?: number;
-  cacheTime?: number;
-  initialData?: any;
-  isGeneral?: boolean;
-  enabled?: boolean;
-  onSuccess?(data: InfiniteData<AxiosResponse>): void;
-  onError?(error: AxiosError): void;
-}
+/**
+ * @param url
+ * @param name
+ * @param infiniteKey
+ * @param staticKey
+ * @param query
+ * @param search
+ * @param params
+ * @param onSuccess
+ * @param onError
+ * @param version
+ * @param initialData
+ * @param enabled
+ * @param staleTime
+ * @param cacheTime
+ */
 const useInfinite = ({
+  axiosInstance,
   url,
   name = 'notLongTimeAvailable',
   infiniteKey,
@@ -44,36 +49,39 @@ const useInfinite = ({
   params,
   onSuccess,
   onError,
-  version,
   initialData,
-  isGeneral = false,
   enabled = false,
   staleTime = 180000,
-  cacheTime = 600000
-}: IGetConfig) => {
-  let prettyName = isString(name) ? name : compact(name);
-  if (prettyName === 'notLongTimeAvailable' || !isEmpty(search)) {
-    prettyName = [];
+  cacheTime = 600000,
+  options
+}: UseInfiniteProps): UseInfiniteResultProps => {
+  const [dynamicParams, setDynamicParams] = useState<DynamicFetchInfiniteParamsProps | undefined>(undefined);
+  let prettyName: Array<string | number | undefined | null> | string = isString(name) ? name : compact(name);
+
+  if (
+    prettyName === 'notLongTimeAvailable' ||
+    !isEmpty(without(values(merge(search, dynamicParams?.search)), undefined, null))
+  ) {
+    prettyName = concat(name, ['search']);
     staleTime = 0;
     cacheTime = 0;
   }
   const queryClient = useQueryClient();
-  const user = useUser();
-  const AxiosInstance = useAxios();
-
-  const [dynamicParams, setDynamicParams] = useState<dynamicParams | undefined>(undefined);
 
   const requestConfig: AxiosRequestConfig = {
-    url: allocateParamToString(urlGenerator(url, version, isGeneral), merge(params, dynamicParams?.params)),
-    method: 'GET',
-
-    headers: {Authorization: user?.access_token ? `Bearer ${user?.access_token}` : ''}
+    url: allocateParamToString(url, merge(params, dynamicParams?.params)),
+    method: 'GET'
   };
 
   const fetchData: any = ({pageParam = 1}) => {
-    set(requestConfig, 'params', merge(merge({page: pageParam}, merge(query, dynamicParams?.query)), search));
-    return AxiosInstance(requestConfig);
+    set(
+      requestConfig,
+      'params',
+      merge(merge({page: pageParam}, merge(query, dynamicParams?.query)), merge(search, dynamicParams?.search))
+    );
+    return axiosInstance(requestConfig);
   };
+
   const infiniteQuery = useInfiniteQuery(prettyName, fetchData, {
     refetchOnWindowFocus: false,
     refetchInterval: false,
@@ -91,15 +99,15 @@ const useInfinite = ({
       if (error?.response?.status === 404 || error?.response?.status === 500) return false;
       return failureCount <= 1;
     },
-    getPreviousPageParam: (lastPage: responseProps) => {
-      if (get(lastPage, ['meta', 'current_page']) > 1) return lastPage.data.meta.current_page - 1;
+    getPreviousPageParam: (lastPage: any) => {
+      if (lastPage?.meta?.current_page > 1) return lastPage?.meta?.current_page - 1;
       return false;
     },
-    getNextPageParam: (lastPage: responseProps) => {
-      if (get(lastPage, ['meta', 'current_page']) < get(lastPage, ['meta', 'last_page']))
-        return lastPage.meta.current_page + 1;
+    getNextPageParam: (lastPage: any) => {
+      if (lastPage?.meta?.current_page < lastPage?.meta?.last_page) return lastPage?.meta?.current_page + 1;
       return false;
-    }
+    },
+    ...options
   });
   const refresh = () => queryClient.invalidateQueries(prettyName);
 
@@ -131,20 +139,30 @@ const useInfinite = ({
   }
 
   useEffect(() => {
-    if (!isEmpty(values(dynamicParams))) {
-      infiniteQuery.remove();
-      infiniteQuery.refetch();
+    if (!isEmpty(compact(values(dynamicParams)))) {
+      if (dynamicParams?.pageParams) {
+        if (isNumber(dynamicParams?.pageParams)) infiniteQuery.fetchNextPage({pageParam: dynamicParams?.pageParams});
+        else infiniteQuery.fetchNextPage();
+      } else {
+        queryClient.setQueryData(prettyName, () => []);
+        infiniteQuery.refetch();
+      }
     }
   }, [dynamicParams]);
 
-  const fetch = (params?: object, query?: object) => {
-    setDynamicParams({params, query});
+  const fetch = (fetchParams: DynamicFetchPaginateParamsProps) => {
+    setDynamicParams(fetchParams);
+  };
+
+  const fetchPage = (fetchPageParams: DynamicFetchInfiniteParamsProps) => {
+    setDynamicParams(fetchPageParams);
   };
 
   return {
     ...infiniteQuery,
     refresh,
     fetch,
+    fetchPage,
     data
   };
 };
