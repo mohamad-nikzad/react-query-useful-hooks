@@ -2,11 +2,12 @@
   "name": "react-query-hooks",
   "version": "1.0.0",
   "description": "",
-  "main": "./dist/cjs/index.js",
-  "module": "./dist/esm/index.js",
-  "types": "./dist/esm/index.d.ts",
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "types": "index.d.ts",
   "files": [
-    "/dist"
+    "/dist",
+    "index.d.ts"
   ],
   "repository": {
     "type": "git",

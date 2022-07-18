@@ -1,55 +1,41 @@
-import React from 'react';
 import StaticAxios, {AxiosInstance} from 'axios';
+import useCustomFetch from './hooks/request/useFetch';
+import {ConfigureProps, QueryOptionProps, UseFetchProps, UseFetchResultProps} from '../index';
 
-const useAxios = makeUseAxios();
+function makeReactQueryHooks() {
+  let axiosInstance: AxiosInstance = StaticAxios;
+  let fetchQueryOptions: QueryOptionProps = {};
+  let queryOptions: QueryOptionProps = {};
 
-const {resetConfigure, configure} = useAxios;
-
-export default useAxios;
-
-export {resetConfigure, configure};
-
-function configToObject(config) {
-  if (typeof config === 'string') {
-    return {
-      url: config
-    };
-  }
-
-  return {...config};
-}
-
-export function makeUseAxios(configureOptions) {
-  let axiosInstance: AxiosInstance;
-  let defaultOptions: any;
-
-  function resetConfigure() {
-    axiosInstance = StaticAxios;
-  }
-
-  function configure(options = {}) {
+  function configure(options: ConfigureProps) {
     if (options.axios !== undefined) {
       axiosInstance = options.axios;
     }
-
-    if (options.defaultOptions !== undefined) {
-      defaultOptions = {...DEFAULT_OPTIONS, ...options.defaultOptions};
+    if (options.fetchQueryOptions !== undefined) {
+      fetchQueryOptions = options.fetchQueryOptions;
+    }
+    if (options.queryOptions !== undefined) {
+      queryOptions = options.queryOptions;
     }
   }
 
-  resetConfigure();
-  configure(configureOptions);
-
-  return Object.assign(useAxios, {
-    resetConfigure,
-    configure
-  });
-
-  function useAxios(_config, _options) {
-    const config = React.useMemo(() => configToObject(_config));
-
-    console.log(axiosInstance, defaultOptions);
-
-    return 'sina';
+  function useFetch(props: Omit<UseFetchProps, 'axiosInstance'>): UseFetchResultProps {
+    return useCustomFetch({
+      axiosInstance,
+      ...props,
+      options: {
+        ...queryOptions,
+        ...fetchQueryOptions,
+        ...props.options
+      }
+    });
   }
+
+  return {configure, useFetch};
 }
+
+const reactQueryHooksInstance = makeReactQueryHooks();
+
+const {configure, useFetch} = reactQueryHooksInstance;
+
+export {configure, useFetch};

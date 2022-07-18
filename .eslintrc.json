@@ -82,6 +82,7 @@
     "no-unused-vars": "warn",
     "no-continue": "warn",
     "no-plusplus": "off",
+    "import/no-unresolved": "off",
     "no-useless-escape": "warn",
     "global-require": "off",
     "no-tabs": "off",
