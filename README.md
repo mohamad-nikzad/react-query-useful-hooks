@@ -1,7 +1,6 @@
 # react-query-useful-hooks
 
-> The best and useful hooks for react-query
-
+The best and useful hooks for [react-query]
 
 
 ![GitHub branch checks state](https://img.shields.io/github/checks-status/sinashahoveisi/react-query-useful-hooks/master?logo=github&style=plastic)
@@ -12,38 +11,19 @@
 ![GitHub language count](https://img.shields.io/github/languages/count/sinashahoveisi/react-query-useful-hooks?logo=TypeScript&style=plastic)
 ![GitHub top language](https://img.shields.io/github/languages/top/sinashahoveisi/react-query-useful-hooks?logo=TypeScript&style=plastic)
 ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/sinashahoveisi/react-query-useful-hooks?style=plastic)
----
 
-## What is this?
+## Features
 
-This package is a [React] simple and useful hooks for [react-query] package.
-
-
-### Table of Contents
-
-- [Installation](#installation)
-- [Api](#Api)
-- [Example](#examples)
-  - [Simple](#simple)
-- [Demo](#demo)
-- [Documentation](#documentation)
-- [Creator](#creator)
-- [License](#license)
-
----
+- All the [axios] awesomeness you are familiar with
+- Zero configuration, but configurable if needed
+- One-line usage
 
 ## Installation
-You can install this package in two ways simultaneously
 
-install with [npm]
 ```sh
-npm install react-query-useful-hooks
+npm install axios react-query react-query-useful-hooks
 ```
-
-install with [yarn]
-```sh
-yarn add react-query-useful-hooks
-```
+> `axios` and `react-query` is a peer dependency and needs to be installed explicitly
 
 ## Api
 
@@ -51,28 +31,46 @@ yarn add react-query-useful-hooks
 import {useFetch, useInfinite, usePaginate, usePost, configure} from 'react-query-useful-hooks';
 ```
 
-## Examples
-
-### Simple
+## Quick Start
 
 ```tsx
 import React from 'react';
 import {useFetch} from 'react-query-useful-hooks';
 
+import React from 'react';
+import {useFetch} from 'react-query-useful-hooks';
+
 function Todos() {
-  const todos = useFetch({
-    url: 'todos/1',
-    enabled: true
-  });
-  console.log(todos);
-  return (
-    <div className="App">
-      <header className="App-header" />
-    </div>
-  );
+    const {isError, isFetching, data, refetch} = useFetch({
+        url: 'todos/1',
+        enabled: true
+    });
+
+    if (isFetching) return <p>Loading...</p>;
+    if (isError) return <p>Error!</p>;
+    return (
+        <div>
+            <button onClick={() => refetch()}>refetch</button>
+            <pre>{JSON.stringify(data, null, 2)}</pre>
+        </div>
+    );
 }
 
 export default Todos;
+```
+
+## API
+
+The package exports one default export and named exports:
+
+```tsx
+import {
+    useFetch, 
+    useInfinite, 
+    usePaginate, 
+    usePost, 
+    configure
+} from 'react-query-useful-hooks';
 ```
 
 ## Creator

@@ -19,9 +19,7 @@
     "prebuild": "yarn clean",
     "start": "rollup -cw",
     "build": "rollup -c",
-    "clean": "rimraf dist react-query-useful-hooks-*.tgz",
-    "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook"
+    "clean": "rimraf dist react-query-useful-hooks-*.tgz"
   },
   "keywords": [
     "react",

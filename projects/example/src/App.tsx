@@ -17,7 +17,11 @@ function App() {
   const queryClient = new QueryClient();
   return (
     <QueryClientProvider client={queryClient}>
-      <Books />
+      <div className="App">
+        <header className="App-header">
+          <Books />
+        </header>
+      </div>
       {process.env.NODE_ENV === 'development' && <ReactQueryDevtools initialIsOpen={false} position="bottom-left" />}
     </QueryClientProvider>
   );

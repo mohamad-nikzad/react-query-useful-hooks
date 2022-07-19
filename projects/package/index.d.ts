@@ -99,13 +99,13 @@ export interface UseFetchProps {
   options?: QueryFetchOptionProps;
 }
 
-export interface UseFetchResultProps extends UseQueryResult<AxiosResponse<any, any>, AxiosError<unknown, any>> {
+export type UseFetchResultProps = UseQueryResult<AxiosResponse<any, any>, AxiosError<unknown, any>> & {
   refresh(): void;
   fetch(fetchParams: DynamicFetchParamsProps): void;
   data: any;
   query?: object;
   params?: object;
-}
+};
 
 export interface UsePaginateProps {
   axiosInstance: AxiosInstance;
@@ -124,13 +124,13 @@ export interface UsePaginateProps {
   options?: QueryPaginateOptionProps;
 }
 
-export interface UsePaginateResultProps extends UseQueryResult<AxiosResponse<any, any>, AxiosError<unknown, any>> {
+export type UsePaginateResultProps = UseQueryResult<AxiosResponse<any, any>, AxiosError<unknown, any>> & {
   refresh(): void;
   fetch(fetchParams: DynamicFetchPaginateParamsProps): void;
   data: any;
   query?: object;
   params?: object;
-}
+};
 
 export interface UseInfiniteProps {
   axiosInstance: AxiosInstance;
@@ -150,13 +150,12 @@ export interface UseInfiniteProps {
   options?: QueryInfiniteOptionProps;
 }
 
-export interface UseInfiniteResultProps
-  extends UseInfiniteQueryResult<AxiosResponse<any, any>, AxiosError<unknown, any>> {
+export type UseInfiniteResultProps = UseInfiniteQueryResult<AxiosResponse<any, any>, AxiosError<unknown, any>> & {
   refresh(): void;
   fetch(fetchParams: DynamicFetchPaginateParamsProps): void;
   fetchPage(fetchParams: DynamicFetchInfiniteParamsProps): void;
   data: any;
-}
+};
 
 export interface UsePostProps {
   axiosInstance: AxiosInstance;
@@ -174,11 +173,10 @@ export interface UsePostProps {
   options?: MutationOptionProps;
 }
 
-export interface UsePostResultProps
-  extends UseMutationResult<AxiosResponse<any, any>, AxiosError<unknown, any>, MutationRequestProps> {
+export type UsePostResultProps = UseMutationResult<AxiosResponse<any, any>, AxiosError<unknown, any>, MutationRequestProps> & {
   post(mutationParams: MutationRequestProps): void;
   params?: MutationRequestProps;
-}
+};
 
 export declare function configure(options: ConfigureProps): void;
 
