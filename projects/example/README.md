@@ -1,46 +1,137 @@
-# Getting Started with Create React App
+# react-query-useful-hooks
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+The best and useful hooks for [react-query]
 
-## Available Scripts
 
-In the project directory, you can run:
+![GitHub branch checks state](https://img.shields.io/github/checks-status/sinashahoveisi/react-query-useful-hooks/master?logo=github&style=plastic)
+![GitHub issues](https://img.shields.io/github/issues/sinashahoveisi/react-query-useful-hooks?logo=github&style=plastic)
+![GitHub](https://img.shields.io/github/license/sinashahoveisi/react-query-useful-hooks?style=plastic)
+![npm](https://img.shields.io/npm/v/react-query-useful-hooks?logo=npm&style=plastic)
+![Website](https://img.shields.io/website?down_message=offline&style=plastic&up_message=online&url=https%3A%2F%2Fsinasho.ir)
+![GitHub language count](https://img.shields.io/github/languages/count/sinashahoveisi/react-query-useful-hooks?logo=TypeScript&style=plastic)
+![GitHub top language](https://img.shields.io/github/languages/top/sinashahoveisi/react-query-useful-hooks?logo=TypeScript&style=plastic)
+![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/sinashahoveisi/react-query-useful-hooks?style=plastic)
 
-### `npm start`
+## Features
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+- All the [axios] awesomeness you are familiar with
+- Zero configuration, but configurable if needed
+- One-line usage
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+## Installation
 
-### `npm test`
+```sh
+npm install axios react-query react-query-useful-hooks
+```
+> `axios` and `react-query` is a peer dependency and needs to be installed explicitly
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Quick Start
 
-### `npm run build`
+```tsx
+import React from 'react';
+import {useFetch} from 'react-query-useful-hooks';
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+import React from 'react';
+import {useFetch} from 'react-query-useful-hooks';
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+function Todos() {
+    const {isError, isFetching, data, refetch} = useFetch({
+        url: 'todos/1',
+        enabled: true
+    });
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+    if (isFetching) return <p>Loading...</p>;
+    if (isError) return <p>Error!</p>;
+    return (
+        <div>
+            <button onClick={() => refetch()}>refetch</button>
+            <pre>{JSON.stringify(data, null, 2)}</pre>
+        </div>
+    );
+}
 
-### `npm run eject`
+export default Todos;
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+## API
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+The package exports one default export and named exports:
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+```tsx
+import {
+    useFetch, 
+    useInfinite, 
+    usePaginate, 
+    usePost, 
+    configure
+} from 'react-query-useful-hooks';
+```
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+## Configuration
 
-## Learn More
+Unless provided via the `configure` function, `react-query-useful-hooks` uses as defaults:
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+- `axios` - set axios instance. the default `axios` package export
+- `queryOptions` - set [options of useQuery of react-query] to set in the options of all queries of useFetch and usePaginate
+- `fetchQueryOptions` - set [options of useQuery of react-query] to set in the options of all queries of useFetch
+- `paginateQueryOptions` - set [options of useQuery of react-query] to set in the options of all queries of usePaginate
+- `infiniteQueryOptions` - set [options of useInfiniteQuery of react-query] to set in the options of all queries of useInfinite
+- `mutationOptions` - set [options of useMutation of react-query] to set in the options of all usePost
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+These defaults may not suit your needs, for example:
+
+- you may want a common base url or timeout for axios requests
+- need to customize cacheTime or staleTime
+- or different behavior in onSuccess and onError requests
+
+In such cases you can use the `configure` function to provide your custom implementation of both.
+
+> When `configure` is used, it should be invoked once before any usages of hooks
+
+### Example
+
+```tsx
+import { configure } from 'react-query-useful-hooks'
+import axios from 'axios'
+
+configure({
+    axios: axios.create({
+        baseURL: 'https://jsonplaceholder.typicode.com',
+        timeout: 1000
+    }),
+    queryOptions: {
+        retry: 5,
+        retryDelay: 100,
+        retryOnMount: false
+    }
+});
+```
+
+## Creator
+
+Sina Shah Oveisi [@sinashahoveisi](https://sinasho.ir)
+
+> I love programming and I am interested in popular frameworks or programming languages and I am currently coding with JavaScript and React framework.
+
+---
+
+## License
+[MIT][license] © [Sina Shahoveisi][author]
+
+[react]: http://reactjs.org
+
+[react-query]: https://react-query-v3.tanstack.com/
+
+[options of useQuery of react-query]: https://react-query-v3.tanstack.com/reference/useQuery
+
+[options of useInfiniteQuery of react-query]: https://react-query-v3.tanstack.com/reference/useInfiniteQuery
+
+[options of useMutation of react-query]: https://react-query-v3.tanstack.com/reference/useMutation
+
+[npm]: https://docs.npmjs.com/cli/install
+
+[yarn]: https://docs.yarn.com/cli/install
+
+[author]: https://github.com/sinashahoveisi
+
+[license]: https://github.com/sinashahoveisi/react-query-useful-hooks/blob/master/LICENSE
