@@ -63,7 +63,6 @@ function makeReactQueryHooks() {
       ...props,
       options: {
         ...queryOptions,
-        ...fetchQueryOptions,
         ...paginateQueryOptions,
         ...props.options
       }

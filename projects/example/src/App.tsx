@@ -10,7 +10,12 @@ configure({
   axios: axios.create({
     baseURL: 'https://jsonplaceholder.typicode.com',
     timeout: 1000
-  })
+  }),
+  queryOptions: {
+    retry: 5,
+    retryDelay: 100,
+    retryOnMount: false
+  }
 });
 
 function App() {
