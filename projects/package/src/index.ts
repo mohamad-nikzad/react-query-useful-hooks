@@ -1,5 +1,5 @@
 import StaticAxios, {AxiosInstance} from 'axios';
-import {useCustomFetch, useCustomInfinite, useCustomPaginate, useCustomPost, useCustomModifyQuery} from 'hooks';
+import {useCustomFetch, useCustomInfinite, useCustomPaginate, useCustomPost, useCustomModifyQuery, useCustomPersist} from 'hooks';
 import {
   ConfigureProps,
   MutationOptionProps,
@@ -14,6 +14,7 @@ import {
   useModifyQueryResultProps,
   UsePaginateProps,
   UsePaginateResultProps,
+  usePersistResultProps,
   UsePostProps,
   UsePostResultProps
 } from '../index';
@@ -97,11 +98,15 @@ function makeReactQueryHooks() {
     return useCustomModifyQuery(props);
   }
 
-  return {configure, useFetch, usePaginate, useInfinite, usePost, useModifyQuery};
+  function usePersist(): usePersistResultProps {
+    return useCustomPersist();
+  }
+
+  return {configure, useFetch, usePaginate, useInfinite, usePost, useModifyQuery, usePersist};
 }
 
 const reactQueryHooksInstance = makeReactQueryHooks();
 
-const {configure, useFetch, usePaginate, useInfinite, usePost, useModifyQuery} = reactQueryHooksInstance;
+const {configure, useFetch, usePaginate, useInfinite, usePost, useModifyQuery, usePersist} = reactQueryHooksInstance;
 
-export {configure, useFetch, usePaginate, useInfinite, usePost, useModifyQuery};
+export {configure, useFetch, usePaginate, useInfinite, usePost, useModifyQuery, usePersist};

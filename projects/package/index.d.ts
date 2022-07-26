@@ -10,6 +10,7 @@ import {
   MutationKey
 } from 'react-query';
 import {ListIterateeCustom, PropertyPath} from 'lodash';
+import {QueryClient} from "react-query/core";
 
 export interface DynamicFetchParamsProps {
   query?: object;
@@ -201,6 +202,13 @@ export type useModifyQueryResultProps = {
   setQuery(insertValue: any): void;
 };
 
+export type usePersistResultProps = {
+  saveQuery(queryClient: QueryClient): void;
+  saveData(name: string, data: any): void;
+  getData(name: string): any;
+  deleteData(name: string): void;
+};
+
 export declare function configure(options: ConfigureProps): void;
 
 export declare function useFetch(props: Omit<UseFetchProps, 'axiosInstance'>): UseFetchResultProps;
@@ -208,5 +216,6 @@ export declare function usePaginate(props: Omit<UsePaginateProps, 'axiosInstance
 export declare function useInfinite(props: Omit<UseInfiniteProps, 'axiosInstance'>): UseInfiniteResultProps;
 export declare function usePost(props: Omit<UsePostProps, 'axiosInstance'>): UseInfiniteResultProps;
 export declare function useModifyQuery(props: useModifyQueryProps): useModifyQueryResultProps;
+export declare function usePersist(): usePersistResultProps;
 
 export default useFetch;

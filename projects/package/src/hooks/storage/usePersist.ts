@@ -2,8 +2,9 @@ import {Persistor, persistQueryClient} from 'react-query/persistQueryClient-expe
 import {createWebStoragePersistor} from 'react-query/createWebStoragePersistor-experimental';
 import {QueryClient} from 'react-query/core';
 import {saveToStorage, getFromStorage, deleteFromStorage} from 'utils';
+import {usePersistResultProps} from '../../../index';
 
-const usePersist = () => {
+const usePersist = (): usePersistResultProps => {
   const localStoragePersistor: Persistor = createWebStoragePersistor({storage: window.localStorage});
 
   const saveQuery = (queryClient: QueryClient) => {
