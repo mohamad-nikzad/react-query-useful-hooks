@@ -59,10 +59,13 @@ The package exports one default export and named exports:
 
 ```tsx
 import {
-    useFetch, 
-    useInfinite, 
-    usePaginate, 
-    usePost, 
+    useFetch,
+    useInfinite,
+    usePaginate,
+    usePost,
+    useModifyQuery,
+    usePersist,
+    useSubscribeQuery,
     configure
 } from 'react-query-useful-hooks';
 ```
@@ -111,7 +114,7 @@ configure({
 
 Sina Shah Oveisi [@sinashahoveisi](https://sinasho.ir)
 
-> I love programming and I am interested in popular frameworks or programming languages and I am currently coding with JavaScript and React framework.
+> I love programming, and I am interested in popular frameworks or programming languages and I am currently coding with JavaScript and React framework.
 
 ---
 

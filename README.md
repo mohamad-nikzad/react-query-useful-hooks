@@ -59,10 +59,13 @@ The package exports one default export and named exports:
 
 ```tsx
 import {
-    useFetch, 
-    useInfinite, 
-    usePaginate, 
-    usePost, 
+    useFetch,
+    useInfinite,
+    usePaginate,
+    usePost,
+    useModifyQuery,
+    usePersist,
+    useSubscribeQuery,
     configure
 } from 'react-query-useful-hooks';
 ```
@@ -73,7 +76,7 @@ Unless provided via the `configure` function, `react-query-useful-hooks` uses as
 
 - `axios` - set axios instance. the default `axios` package export
 - `queryOptions` - set [options of useQuery of react-query] to set in the options of all queries of useFetch and usePaginate
-- `fetchQueryOptions` - set [options of useQuery of react-query] to set in the options of all queries of useFetch 
+- `fetchQueryOptions` - set [options of useQuery of react-query] to set in the options of all queries of useFetch
 - `paginateQueryOptions` - set [options of useQuery of react-query] to set in the options of all queries of usePaginate
 - `infiniteQueryOptions` - set [options of useInfiniteQuery of react-query] to set in the options of all queries of useInfinite
 - `mutationOptions` - set [options of useMutation of react-query] to set in the options of all usePost
@@ -111,7 +114,7 @@ configure({
 
 Sina Shah Oveisi [@sinashahoveisi](https://sinasho.ir)
 
-> I love programming and I am interested in popular frameworks or programming languages and I am currently coding with JavaScript and React framework.
+> I love programming, and I am interested in popular frameworks or programming languages and I am currently coding with JavaScript and React framework.
 
 ---
 
