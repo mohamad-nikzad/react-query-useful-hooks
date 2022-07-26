@@ -1,5 +1,13 @@
 import StaticAxios, {AxiosInstance} from 'axios';
-import {useCustomFetch, useCustomInfinite, useCustomPaginate, useCustomPost, useCustomModifyQuery, useCustomPersist} from 'hooks';
+import {
+  useCustomFetch,
+  useCustomInfinite,
+  useCustomPaginate,
+  useCustomPost,
+  useCustomModifyQuery,
+  useCustomPersist,
+  useCustomSubscribeQuery
+} from 'hooks';
 import {
   ConfigureProps,
   MutationOptionProps,
@@ -10,13 +18,14 @@ import {
   UseFetchResultProps,
   UseInfiniteProps,
   UseInfiniteResultProps,
-  useModifyQueryProps,
-  useModifyQueryResultProps,
+  UseModifyQueryProps,
+  UseModifyQueryResultProps,
   UsePaginateProps,
   UsePaginateResultProps,
-  usePersistResultProps,
+  UsePersistResultProps,
   UsePostProps,
-  UsePostResultProps
+  UsePostResultProps,
+  UseSubscribeQueryProps
 } from '../index';
 
 function makeReactQueryHooks() {
@@ -94,19 +103,24 @@ function makeReactQueryHooks() {
     });
   }
 
-  function useModifyQuery(props: useModifyQueryProps): useModifyQueryResultProps {
+  function useModifyQuery(props: UseModifyQueryProps): UseModifyQueryResultProps {
     return useCustomModifyQuery(props);
   }
 
-  function usePersist(): usePersistResultProps {
+  function usePersist(): UsePersistResultProps {
     return useCustomPersist();
   }
 
-  return {configure, useFetch, usePaginate, useInfinite, usePost, useModifyQuery, usePersist};
+  function useSubscribeQuery(props: UseSubscribeQueryProps): any {
+    return useCustomSubscribeQuery(props);
+  }
+
+  return {configure, useFetch, usePaginate, useInfinite, usePost, useModifyQuery, usePersist, useSubscribeQuery};
 }
 
 const reactQueryHooksInstance = makeReactQueryHooks();
 
-const {configure, useFetch, usePaginate, useInfinite, usePost, useModifyQuery, usePersist} = reactQueryHooksInstance;
+const {configure, useFetch, usePaginate, useInfinite, usePost, useModifyQuery, usePersist, useSubscribeQuery} =
+  reactQueryHooksInstance;
 
-export {configure, useFetch, usePaginate, useInfinite, usePost, useModifyQuery, usePersist};
+export {configure, useFetch, usePaginate, useInfinite, usePost, useModifyQuery, usePersist, useSubscribeQuery};

@@ -189,11 +189,11 @@ export type UsePostResultProps = UseMutationResult<
   params?: MutationRequestProps;
 };
 
-export interface useModifyQueryProps {
+export interface UseModifyQueryProps {
   queryName: Array<string | number | undefined | null> | string;
 }
 
-export type useModifyQueryResultProps = {
+export type UseModifyQueryResultProps = {
   updateQuery(path: updatePathList, updateValue: any, predicate?: ListIterateeCustom<object, boolean> | number): void;
   removeQuery(): void;
   pushQuery(insertValue: any, path?: updatePathList, predicate?: ListIterateeCustom<object, boolean>): void;
@@ -202,12 +202,22 @@ export type useModifyQueryResultProps = {
   setQuery(insertValue: any): void;
 };
 
-export type usePersistResultProps = {
+export type UsePersistResultProps = {
   saveQuery(queryClient: QueryClient): void;
   saveData(name: string, data: any): void;
   getData(name: string): any;
   deleteData(name: string): void;
 };
+
+export interface SubscribeDataProps {
+  key: string;
+  path: string | string[];
+}
+
+export interface UseSubscribeQueryProps {
+  name: Array<string | number | undefined | null> | string;
+  subscribesDataSet: SubscribeDataProps[];
+}
 
 export declare function configure(options: ConfigureProps): void;
 
@@ -215,7 +225,8 @@ export declare function useFetch(props: Omit<UseFetchProps, 'axiosInstance'>): U
 export declare function usePaginate(props: Omit<UsePaginateProps, 'axiosInstance'>): UsePaginateResultProps;
 export declare function useInfinite(props: Omit<UseInfiniteProps, 'axiosInstance'>): UseInfiniteResultProps;
 export declare function usePost(props: Omit<UsePostProps, 'axiosInstance'>): UseInfiniteResultProps;
-export declare function useModifyQuery(props: useModifyQueryProps): useModifyQueryResultProps;
-export declare function usePersist(): usePersistResultProps;
+export declare function useModifyQuery(props: UseModifyQueryProps): UseModifyQueryResultProps;
+export declare function usePersist(): UsePersistResultProps;
+export declare function useSubscribeQuery(props: UseSubscribeQueryProps): any;
 
 export default useFetch;

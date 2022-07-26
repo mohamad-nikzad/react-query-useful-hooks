@@ -7,4 +7,4 @@ export {default as useCustomInfinite} from 'hooks/request/useInfinite';
 // storage
 export {default as useCustomModifyQuery} from 'hooks/storage/useModifyQuery';
 export {default as useCustomPersist} from 'hooks/storage/usePersist';
-// export {default as useCustomSubscribeQuery} from 'hooks/storage/useSubscribeQuery';
+export {default as useCustomSubscribeQuery} from 'hooks/storage/useSubscribeQuery';

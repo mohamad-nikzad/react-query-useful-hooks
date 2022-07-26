@@ -18,9 +18,9 @@ import remove from 'lodash/remove';
 import pullAt from 'lodash/pullAt';
 import isNull from 'lodash/isNull';
 import {ListIterateeCustom, PropertyPath} from 'lodash';
-import {updatePathList, useModifyQueryProps} from '../../../index';
+import {updatePathList, UseModifyQueryProps} from '../../../index';
 
-const useModifyQuery = ({queryName}: useModifyQueryProps) => {
+const useModifyQuery = ({queryName}: UseModifyQueryProps) => {
   const query = useQueryClient();
 
   const updateList = (

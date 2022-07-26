@@ -1,15 +1,10 @@
 import {useQuery} from 'react-query';
-import {SubscribeDataProps} from 'types/general';
 import forEach from 'lodash/forEach';
 import set from 'lodash/set';
 import get from 'lodash/get';
+import {UseSubscribeQueryProps, SubscribeDataProps} from '../../../index';
 
-interface Props {
-  name: Array<string | number | undefined | null> | string;
-  subscribesDataSet: SubscribeDataProps[];
-}
-
-const useSubscribeQuery = ({name, subscribesDataSet}: Props) => {
+const useSubscribeQuery = ({name, subscribesDataSet}: UseSubscribeQueryProps): any => {
   const query = useQuery(name);
 
   const valueSubscribeDataSet = {};
