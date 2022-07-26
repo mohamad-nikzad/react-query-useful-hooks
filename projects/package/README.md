@@ -25,32 +25,29 @@ npm install axios react-query react-query-useful-hooks
 ```
 > `axios` and `react-query` is a peer dependency and needs to be installed explicitly
 
-## Api
-
-```tsx
-import {useFetch, useInfinite, usePaginate, usePost, configure} from 'react-query-useful-hooks';
-```
-
 ## Quick Start
 
 ```tsx
 import React from 'react';
 import {useFetch} from 'react-query-useful-hooks';
 
-function Todos() {
-  const {isError, isFetching, data, refetch} = useFetch({
-    url: 'todos/1',
-    enabled: true
-  });
+import React from 'react';
+import {useFetch} from 'react-query-useful-hooks';
 
-  if (isFetching) return <p>Loading...</p>;
-  if (isError) return <p>Error!</p>;
-  return (
-    <div>
-      <button onClick={() => refetch()}>refetch</button>
-      <pre>{JSON.stringify(data, null, 2)}</pre>
-    </div>
-  );
+function Todos() {
+    const {isError, isFetching, data, refetch} = useFetch({
+        url: 'todos/1',
+        enabled: true
+    });
+
+    if (isFetching) return <p>Loading...</p>;
+    if (isError) return <p>Error!</p>;
+    return (
+        <div>
+            <button onClick={() => refetch()}>refetch</button>
+            <pre>{JSON.stringify(data, null, 2)}</pre>
+        </div>
+    );
 }
 
 export default Todos;
@@ -62,12 +59,52 @@ The package exports one default export and named exports:
 
 ```tsx
 import {
-  useFetch,
-  useInfinite,
-  usePaginate,
-  usePost,
-  configure
+    useFetch, 
+    useInfinite, 
+    usePaginate, 
+    usePost, 
+    configure
 } from 'react-query-useful-hooks';
+```
+
+## Configuration
+
+Unless provided via the `configure` function, `react-query-useful-hooks` uses as defaults:
+
+- `axios` - set axios instance. the default `axios` package export
+- `queryOptions` - set [options of useQuery of react-query] to set in the options of all queries of useFetch and usePaginate
+- `fetchQueryOptions` - set [options of useQuery of react-query] to set in the options of all queries of useFetch
+- `paginateQueryOptions` - set [options of useQuery of react-query] to set in the options of all queries of usePaginate
+- `infiniteQueryOptions` - set [options of useInfiniteQuery of react-query] to set in the options of all queries of useInfinite
+- `mutationOptions` - set [options of useMutation of react-query] to set in the options of all usePost
+
+These defaults may not suit your needs, for example:
+
+- you may want a common base url or timeout for axios requests
+- need to customize cacheTime or staleTime
+- or different behavior in onSuccess and onError requests
+
+In such cases you can use the `configure` function to provide your custom implementation of both.
+
+> When `configure` is used, it should be invoked once before any usages of hooks
+
+### Example
+
+```tsx
+import { configure } from 'react-query-useful-hooks'
+import axios from 'axios'
+
+configure({
+    axios: axios.create({
+        baseURL: 'https://jsonplaceholder.typicode.com',
+        timeout: 1000
+    }),
+    queryOptions: {
+        retry: 5,
+        retryDelay: 100,
+        retryOnMount: false
+    }
+});
 ```
 
 ## Creator
@@ -84,6 +121,12 @@ Sina Shah Oveisi [@sinashahoveisi](https://sinasho.ir)
 [react]: http://reactjs.org
 
 [react-query]: https://react-query-v3.tanstack.com/
+
+[options of useQuery of react-query]: https://react-query-v3.tanstack.com/reference/useQuery
+
+[options of useInfiniteQuery of react-query]: https://react-query-v3.tanstack.com/reference/useInfiniteQuery
+
+[options of useMutation of react-query]: https://react-query-v3.tanstack.com/reference/useMutation
 
 [npm]: https://docs.npmjs.com/cli/install
 

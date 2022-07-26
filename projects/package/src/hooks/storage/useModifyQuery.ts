@@ -18,13 +18,9 @@ import remove from 'lodash/remove';
 import pullAt from 'lodash/pullAt';
 import isNull from 'lodash/isNull';
 import {ListIterateeCustom, PropertyPath} from 'lodash';
-import {updatePathList} from 'types/general';
+import {updatePathList, useModifyQueryProps} from '../../../index';
 
-interface Props {
-  queryName: Array<string | number | undefined | null> | string;
-}
-
-const useModifyQuery = ({queryName}: Props) => {
+const useModifyQuery = ({queryName}: useModifyQueryProps) => {
   const query = useQueryClient();
 
   const updateList = (

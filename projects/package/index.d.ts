@@ -9,6 +9,7 @@ import {
   UseMutationResult,
   MutationKey
 } from 'react-query';
+import {ListIterateeCustom, PropertyPath} from 'lodash';
 
 export interface DynamicFetchParamsProps {
   query?: object;
@@ -74,6 +75,11 @@ export type MutationOptionProps = Omit<
   UseMutationOptions<AxiosResponse<any, any>, AxiosError<unknown, any>, MutationRequestProps>,
   'mutationKey' | 'mutationFn' | 'onSuccess' | 'onError'
 >;
+
+export interface updatePathList {
+  objectPath?: PropertyPath;
+  listPath?: PropertyPath;
+}
 
 export interface ConfigureProps {
   axios?: AxiosInstance;
@@ -173,9 +179,26 @@ export interface UsePostProps {
   options?: MutationOptionProps;
 }
 
-export type UsePostResultProps = UseMutationResult<AxiosResponse<any, any>, AxiosError<unknown, any>, MutationRequestProps> & {
+export type UsePostResultProps = UseMutationResult<
+  AxiosResponse<any, any>,
+  AxiosError<unknown, any>,
+  MutationRequestProps
+> & {
   post(mutationParams: MutationRequestProps): void;
   params?: MutationRequestProps;
+};
+
+export interface useModifyQueryProps {
+  queryName: Array<string | number | undefined | null> | string;
+}
+
+export type useModifyQueryResultProps = {
+  updateQuery(path: updatePathList, updateValue: any, predicate?: ListIterateeCustom<object, boolean> | number): void;
+  removeQuery(): void;
+  pushQuery(insertValue: any, path?: updatePathList, predicate?: ListIterateeCustom<object, boolean>): void;
+  unshiftQuery(insertValue: any, path?: updatePathList, predicate?: ListIterateeCustom<object, boolean>): void;
+  deleteQuery(path: updatePathList, predicate?: ListIterateeCustom<object, boolean> | number): void;
+  setQuery(insertValue: any): void;
 };
 
 export declare function configure(options: ConfigureProps): void;
@@ -184,5 +207,6 @@ export declare function useFetch(props: Omit<UseFetchProps, 'axiosInstance'>): U
 export declare function usePaginate(props: Omit<UsePaginateProps, 'axiosInstance'>): UsePaginateResultProps;
 export declare function useInfinite(props: Omit<UseInfiniteProps, 'axiosInstance'>): UseInfiniteResultProps;
 export declare function usePost(props: Omit<UsePostProps, 'axiosInstance'>): UseInfiniteResultProps;
+export declare function useModifyQuery(props: useModifyQueryProps): useModifyQueryResultProps;
 
 export default useFetch;
