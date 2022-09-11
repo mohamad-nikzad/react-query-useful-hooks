@@ -28,8 +28,6 @@ npm install axios react-query react-query-useful-hooks
 ## Quick Start
 
 ```tsx
-import React from 'react';
-import {useFetch} from 'react-query-useful-hooks';
 
 import React from 'react';
 import {useFetch} from 'react-query-useful-hooks';
